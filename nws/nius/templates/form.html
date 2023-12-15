@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Podaj adres email</h1>
+    <form method="post">
+        {% csrf_token %}
+        <br>email<br>
+        <input type="email" name="email">
+        <button type="submit">Send</button>
+
+    </form>
+{% endblock content%}

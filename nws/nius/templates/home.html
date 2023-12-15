@@ -1,0 +1,75 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load tz %}
+Newsy pobrane {{start_date}}
+
+
+
+
+<br>
+{% load crispy_forms_tags %}
+<p>
+    <button type="button" data-toggle="collapse" data-target="#Filtr"
+        aria-expanded="false" aria-controls="collapseExample">
+        Pokaż opcje filtrowania
+    </button>
+</p>
+<div class="collapse" id="Filtr">
+    <div class="card card-body">
+        <form method="get">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit">Filtruj</button><br>
+            <button type="button" onclick="window.location.href = '{% url 'home' %}'">Usuń filtr</button>
+        
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="row"> {% for item in news_with_sources %}
+    {% if forloop.counter0|divisibleby:3 %}
+</div>
+<div class="row"> {% endif %}
+    <div class="col-4 pb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{item.news.tytul}}</h5>
+                {%if item.new%}
+                <span class="badge bg-danger">New</span></h5>
+                {% endif %}
+                <p class="card-text">{{item.news.opis|truncatewords:25}}</p>
+
+            </div>
+            <div class="card-footer">
+                <div class="container text-center">
+
+                    <div class="row">
+                        <p class="card-text">Źródło: <a href="{{item.news.source}}"
+                                target="_blank">{{item.source}}</a><br>
+
+                            <a href="{{item.news.url}}" style="text-decoration:none; white:black"
+                                target="_blank">Przejdź do artykułu</a><br>
+
+                            Data: {{item.news.day | date:"d/m/y"}}<br>
+                            <a href="{% url 'sendemail' item.news.id %}">Udostępnij</a><br>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div> {% endfor %}
+</div>
+<button type="button" onclick="window.location.href = '{% url 'home' %}'">Usuń filtr</button>
+{% endblock content%}
