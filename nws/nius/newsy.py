@@ -1,9 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
-# from django.db.models import Q
 import configparser
-# from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,9 +10,7 @@ import re
 from django.core.mail import send_mail
 
 config = configparser.ConfigParser()
-# należy podać ścieżkę do pliku nws\nius\config.ini
-# config.read(r'D:\OneDrive\Python\news\nws\nius\config.ini')
-config.read(r'D:\Code\news\nws\nius\config.ini')
+config.read(r'config.ini')
 start_date_str = config.get('DEFAULT', 'start_date')
 start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
 
@@ -82,7 +78,7 @@ def rzadowe():
                 except:
                     intro = "Brak opisu"
                 desc.append(intro)
-            # source = url.split('/')
+            
             temp_news = []
             while len(dates_list)< len(titles_list):
                 dates_list.append(datetime.today())
@@ -92,49 +88,6 @@ def rzadowe():
             temp_news = [x for x in temp_news if x['date'] >= start_date]
             newsy.extend(temp_news)
     return newsy
-
-
-def unijne():
-    newsy = []
-    urls = ['https://www.funduszeeuropejskie.gov.pl/strony/wiadomosci#/najnowsze=1', 'https://www.funduszeeuropejskie.gov.pl/strony/o-funduszach/fundusze-2021-2027/aktualnosci/#/domyslne=1', 'https://www.polskacyfrowa.gov.pl/strony/o-programie/fundusze-europejskie-na-rozwoj-cyfrowy-2021-2027/aktualnosci/#/domyslne=1',
-            'https://www.poir.gov.pl/strony/o-programie/fe-dla-nowoczesnej-gospodarki/aktualnosci/#/domyslne=1', 'https://www.rozwojspoleczny.gov.pl/strony/aktualnosci#/domyslne=1', 'https://www.rozwojcyfrowy.gov.pl/strony/aktualnosci/#/domyslne=1', 'https://www.nowoczesnagospodarka.gov.pl/strony/aktualnosci/#/domyslne=1', 'https://www.feniks.gov.pl/strony/aktualnosci/#/domyslne=1']
-
-    for url in urls:
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(options=options)
-        driver.get(url)
-
-        try:
-            wait = WebDriverWait(driver, 10)
-            element = wait.until(
-                EC.presence_of_element_located((By.TAG_NAME, 'time')))
-        except:
-            print(f'{url} nie odpowiada')
-            continue
-
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        h3 = soup.find_all('h3')
-        h3.pop()
-        titles = [title.text for title in h3]
-        dates_str = [date.text.strip() for date in soup.find_all('time')]
-        dates = [datetime.strptime(date_str, '%d.%m.%Y')
-                 for date_str in dates_str]
-        source = url.split('/')
-        links = [h.find('a') for h in h3]
-        links = ['https://'+source[2]+link['href'] for link in links]
-
-        driver.quit()
-
-        temp_news = []
-        for i in range(len(titles)):
-            temp_news.append(
-                {'title': titles[i], 'date': dates[i], 'link': links[i], 'desc': 'Brak opisu', 'source': url})
-
-        temp_news = [x for x in temp_news if x['date'] >= start_date]
-        newsy.extend(temp_news)
-    return newsy
-
 
 def mojrerpo():
     newsy = []
@@ -268,50 +221,8 @@ def sow():
     newsy = [x for x in newsy if x['date'] >= start_date]
     return newsy
 
-
-def bip():
-    url = 'https://bip.kujawsko-pomorskie.pl/'
-    options = webdriver.ChromeOptions()
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(options=options)
-    driver.get(url)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    newsy = []
-    # # ------titles--------#
-    titles = [title["title"]
-              for title in soup.find_all("a", class_="button-details")]
-    # # ------links--------#
-    links = [link["href"]
-             for link in soup.find_all("a", class_="button-details")]
-    # print(links[0])
-    # # ------dates--------#
-    dates_matrix = soup.find(
-        "table", class_="table-list table-list__main-page")
-    pattern = r'\d{2}\.\d{2}\.\d{4}'
-    dates_str = [date_str for date_str in dates_matrix.find_all(
-        string=re.compile(pattern))]
-    dates_str = [date_str.replace('\n', '') for date_str in dates_str]
-    dates_str = [' '.join(date_str.split()) for date_str in dates_str]
-    dates = []
-    for date_str in dates_str:
-        try:
-            date = datetime.strptime(date_str, '%d.%m.%Y')
-            dates.append(date)
-        except:
-            date = start_date
-            dates.append(date)
-    driver.quit()
-    # ------stwórz słownik--------#
-    for i in range(len(titles)):
-        newsy.append({'title': titles[i], 'date': dates[i],
-                     'link': links[i], 'desc': "Brak opisu", 'source': url})
-    newsy = [x for x in newsy if x['date'] >= start_date]
-    return newsy
-
-
 new_start_date = datetime.now().date()
 config.set('DEFAULT', 'start_date', new_start_date.strftime('%Y-%m-%d'))
-# należy podać ścieżkę do pliku nws\nius\config.ini
-# with open(r'D:\OneDrive\Python\news\nws\nius\config.ini', 'w') as f:
-with open(r'D:\Code\news\nws\nius\config.ini', 'w') as f:
+
+with open(r'config.ini', 'w') as f:
     config.write(f)

@@ -60,9 +60,8 @@ def home(request):
         news_with_sources.append({'news': news, 'source': source, 'new':news.is_new})
 
     config = configparser.ConfigParser()
-    #należy podać ścieżkę do pliku nws\nius\config.ini
-    # config.read(r'D:\OneDrive\Python\news\nws\nius\config.ini')
-    config.read(r'D:\Code\news\nws\nius\config.ini')
+    
+    config.read(r'config.ini')
     
     start_date_str = config.get('DEFAULT', 'start_date')
     start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
@@ -76,7 +75,7 @@ def brak(request):
 def sent(request):
     return render(request, 'sent.html')
 def about(request):
-    path = r'D:\OneDrive\Python\news\nws\nius\pliki\about.docx'
+    path = r'about.docx'
     file_content = docx2txt.process(path)
     return render(request, 'about.html',{'file_content': file_content})
 
@@ -87,7 +86,7 @@ def sendemail(request, news_id):
         msg = f"{news.opis} \nPrzeczytaj więcej na stronie {news.url}"
         email = request.POST.get('email')
         send_mail(
-            sub, msg,'michal.na.wsb@gmail.com',
+            sub, msg,'put your email here sender email',
             [email]
         )
         return render(request, 'sent.html')
