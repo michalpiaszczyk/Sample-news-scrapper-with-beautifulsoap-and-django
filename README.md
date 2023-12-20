@@ -41,11 +41,14 @@ You can send the news via email by clicking "Udostępnij".
 
 To use thise template you need to create django project on your own and use included files.
 
-1. To use About tab you can make "pliki" folder in application folder in your Django project. App will display content of docx and txt file
+1. nius is the name of the app, nws name of the project 
+2. To use About tab you can make "pliki" folder in application folder in your Django project. App will display content of docx and txt file
 2. "templates" is folder with .html files for the project. Use it in applicationn folder
-3. "config.ini" stores last update date /app folder/
-4. "constants.py" is used in filters /app folder/
-5. forms.py is used for filters /app folder/
+3. "config.ini" stores last update date
+4. "constants.py" is used in filters
+5. "forms.py" is used for filters
+6. "newsy.py" stores functions definitions
+
 
 
 
