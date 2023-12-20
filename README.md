@@ -19,7 +19,6 @@ To use thise template you need to create django project on your own and use incl
 3. "config.ini" stores last update date /app folder/
 4. "constants.py" is used in filters /app folder/
 5. forms.py is used for filters /app folder/
-6. 
-7. 
+
 
 

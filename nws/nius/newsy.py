@@ -89,6 +89,47 @@ def rzadowe():
             newsy.extend(temp_news)
     return newsy
 
+def unijne():
+    newsy = []
+    urls = ['https://www.funduszeeuropejskie.gov.pl/strony/wiadomosci#/najnowsze=1', 'https://www.funduszeeuropejskie.gov.pl/strony/o-funduszach/fundusze-2021-2027/aktualnosci/#/domyslne=1', 'https://www.polskacyfrowa.gov.pl/strony/o-programie/fundusze-europejskie-na-rozwoj-cyfrowy-2021-2027/aktualnosci/#/domyslne=1',
+            'https://www.poir.gov.pl/strony/o-programie/fe-dla-nowoczesnej-gospodarki/aktualnosci/#/domyslne=1', 'https://www.rozwojspoleczny.gov.pl/strony/aktualnosci#/domyslne=1', 'https://www.rozwojcyfrowy.gov.pl/strony/aktualnosci/#/domyslne=1', 'https://www.nowoczesnagospodarka.gov.pl/strony/aktualnosci/#/domyslne=1', 'https://www.feniks.gov.pl/strony/aktualnosci/#/domyslne=1']
+
+    for url in urls:
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        driver = webdriver.Chrome(options=options)
+        driver.get(url)
+
+        try:
+            wait = WebDriverWait(driver, 10)
+            element = wait.until(
+                EC.presence_of_element_located((By.TAG_NAME, 'time')))
+        except:
+            print(f'{url} nie odpowiada')
+            continue
+
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        h3 = soup.find_all('h3')
+        h3.pop()
+        titles = [title.text for title in h3]
+        dates_str = [date.text.strip() for date in soup.find_all('time')]
+        dates = [datetime.strptime(date_str, '%d.%m.%Y')
+                 for date_str in dates_str]
+        source = url.split('/')
+        links = [h.find('a') for h in h3]
+        links = ['https://'+source[2]+link['href'] for link in links]
+
+        driver.quit()
+
+        temp_news = []
+        for i in range(len(titles)):
+            temp_news.append(
+                {'title': titles[i], 'date': dates[i], 'link': links[i], 'desc': 'Brak opisu', 'source': url})
+
+        temp_news = [x for x in temp_news if x['date'] >= start_date]
+        newsy.extend(temp_news)
+    return newsy
+
 def mojrerpo():
     newsy = []
     url = 'https://mojregion.eu/rpo/wiadomosci/'

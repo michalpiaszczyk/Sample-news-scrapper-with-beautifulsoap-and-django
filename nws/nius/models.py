@@ -1,5 +1,5 @@
 from django.db import models
-from .newsy import trzy_doliny, rzadowe, mojrerpo, mojprow, efr, sow
+from .newsy import trzy_doliny, rzadowe, mojrerpo, mojprow, efr, sow, unijne
 
 
 # Create your models here.
@@ -22,12 +22,13 @@ class News(models.Model):
 
 trzy_doliny = trzy_doliny()
 rzadowe = rzadowe()
+unijne = unijne()
 moj = mojrerpo()
 prow = mojprow()
 efr = efr()
 sow = sow()
 
-all_list = [moj, prow, trzy_doliny, rzadowe, efr, sow]
+all_list = [moj, prow, trzy_doliny, rzadowe, efr, sow, unijne]
 
 newsy_wszystkie=[]
 for x in all_list:
