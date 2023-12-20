@@ -4,11 +4,38 @@ The purpose of the code is tracking of news appearing on selected websites. Thes
 
 ![2023-12-15 (1)](https://github.com/michalpiaszczyk/Sample-news-scrapper-with-beautifulsoap-and-django/assets/112171020/422c058b-e8cd-45fd-9a09-7441cb1dd73d)
 
+You can filter the news by:
+- title
+- dates
+- source
+
+
+
+
+
 ![2023-12-15 (2)](https://github.com/michalpiaszczyk/Sample-news-scrapper-with-beautifulsoap-and-django/assets/112171020/96bc1865-bd2e-4ee2-b619-0b29ce8dec08)
 
 ![2023-12-15 (3)](https://github.com/michalpiaszczyk/Sample-news-scrapper-with-beautifulsoap-and-django/assets/112171020/0e2b490c-b2a0-49fa-acea-cd3006dcd54f)
 
-You can send chosen news via email
+New articles get the "New" badge.
+
+
+![2023-12-19](https://github.com/michalpiaszczyk/Sample-news-scrapper-with-beautifulsoap-and-django/assets/112171020/d79c882e-f3b2-4254-8091-33d370d8e696)
+
+You will be redirected to the main page of the source by clicking on the link to "Źródło".
+
+You will be redirected directly to the article by clicking on "Przejdź do artykułu".
+
+You can send the news via email by clicking "Udostępnij".
+
+
+![2023-12-19 (1)](https://github.com/michalpiaszczyk/Sample-news-scrapper-with-beautifulsoap-and-django/assets/112171020/69fe14e6-5c2a-4471-851c-bd76c6fe12fa)
+
+
+![2023-12-19 (4)](https://github.com/michalpiaszczyk/Sample-news-scrapper-with-beautifulsoap-and-django/assets/112171020/495e4a25-5ee5-4162-9e96-eb65c5fcb12f)
+
+![2023-12-19 (5)](https://github.com/michalpiaszczyk/Sample-news-scrapper-with-beautifulsoap-and-django/assets/112171020/c1de95be-39aa-4e2b-9342-56e2f74fb139)
+
 
 **2. Usage**
 
